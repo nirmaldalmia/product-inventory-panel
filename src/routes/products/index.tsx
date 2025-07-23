@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { DataTable } from '@/components/ui/data-table'
 import { columns } from './config'
-import type { TProduct } from './types'
+import type { TProduct } from '@/components/products/types'
 
 // Mock Data
 const products: TProduct[] = [

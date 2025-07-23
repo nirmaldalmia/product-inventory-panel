@@ -10,5 +10,3 @@ export const productSchema = z.object({
   stock: z.number(),
   status: statusSchema,
 })
-
-export type TProduct = z.infer<typeof productSchema>
