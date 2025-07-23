@@ -1,5 +1,6 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Product } from "@/components/products/types";
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -12,11 +13,11 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "price",
-    header: "Price",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Price" />,
   },
   {
     accessorKey: "stock",
-    header: "Stock",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Stock" />,
   },
   {
     accessorKey: "status",
