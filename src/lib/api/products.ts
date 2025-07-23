@@ -1,4 +1,4 @@
-import { productsResponseSchema } from "@/components/products/schema";
+import { productsResponseSchema } from '@/components/products/schema'
 
 // fetch only relevant fields
 const select = ['title', 'category', 'price', 'stock', 'availabilityStatus']
@@ -7,10 +7,14 @@ export async function getProducts({
   sortBy,
   order,
   query,
+  limit = 10,
+  skip = 0,
 }: {
   sortBy?: string
   order?: 'asc' | 'desc'
   query?: string
+  limit?: number
+  skip?: number
 }) {
   const url = new URL('https://dummyjson.com/products')
 
@@ -20,6 +24,9 @@ export async function getProducts({
   }
 
   url.searchParams.set('select', select.join(','))
+  url.searchParams.set('limit', String(limit))
+  url.searchParams.set('skip', String(skip))
+
   if (sortBy) {
     url.searchParams.set('sortBy', sortBy)
     if (order) {
@@ -34,5 +41,5 @@ export async function getProducts({
   }
 
   const data = await res.json()
-  return productsResponseSchema.parse(data).products
+  return productsResponseSchema.parse(data)
 } 

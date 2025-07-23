@@ -5,7 +5,7 @@ import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import { columns } from './config'
 import { DataTable } from '@/components/ui/data-table'
 import { getProducts } from '@/lib/api/products'
-import { useSortingStore } from '@/store/data-table'
+import { useDataTableStore } from '@/store/data-table'
 import { SearchInput } from '@/components/ui/search-input'
 
 export const Route = createFileRoute('/products/')({
@@ -13,19 +13,26 @@ export const Route = createFileRoute('/products/')({
 })
 
 function ProductsPage() {
-  const { sorting, search, setSearch } = useSortingStore()
+  const { sorting, search, setSearch, pagination, setPagination } =
+    useDataTableStore()
+
+  const { pageIndex, pageSize } = pagination
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['products', sorting, search],
+    queryKey: ['products', sorting, search, pageIndex, pageSize],
     queryFn: () =>
       getProducts({
         sortBy: sorting[0]?.id,
         order: sorting[0]?.desc ? 'desc' : 'asc',
         query: search,
+        limit: pageSize,
+        skip: pageIndex * pageSize,
       }),
     staleTime: 1000 * 60 * 5, // 5 minutes
     placeholderData: keepPreviousData,
   })
+
+  const pageCount = data ? Math.ceil(data.total / data.limit) : 0
 
   if (isLoading) {
     return (
@@ -57,7 +64,10 @@ function ProductsPage() {
       </div>
       <DataTable
         columns={columns}
-        data={data ?? []}
+        data={data?.products ?? []}
+        pageCount={pageCount}
+        pagination={pagination}
+        onPaginationChange={setPagination}
       />
     </div>
   )

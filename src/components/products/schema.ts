@@ -25,4 +25,7 @@ export const productSchema = rawProductSchema.transform((product) => ({
 // Schema for the full API response, which includes an array of products
 export const productsResponseSchema = z.object({
   products: z.array(productSchema),
+  total: z.number(),
+  skip: z.number(),
+  limit: z.number(),
 });

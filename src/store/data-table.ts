@@ -1,17 +1,30 @@
 import { create } from 'zustand'
-import type { OnChangeFn, SortingState } from '@tanstack/react-table'
+import type { OnChangeFn, SortingState, PaginationState } from '@tanstack/react-table'
 
-type SortingStore = {
+type DataTableStore = {
   sorting: SortingState
   setSorting: OnChangeFn<SortingState>
   search: string
   setSearch: (search: string) => void
+  pagination: PaginationState
+  setPagination: OnChangeFn<PaginationState>
 }
 
-export const useSortingStore = create<SortingStore>(set => ({
+export const useDataTableStore = create<DataTableStore>(set => ({
   sorting: [],
   search: '',
+  pagination: {
+    pageIndex: 0,
+    pageSize: 10,
+  },
   setSearch: search => set({ search }),
+  setPagination: updater =>
+    set(state => ({
+      pagination:
+        typeof updater === 'function'
+          ? updater(state.pagination)
+          : updater,
+    })),
   // onSortingChange handler can be a function or a value
   setSorting: updater =>
     set(state => ({
