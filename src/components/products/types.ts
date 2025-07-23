@@ -1,4 +1,4 @@
-import { z } from "zod"
-import { productSchema } from "./schema"
+import { z } from "zod";
+import { productSchema } from "./schema";
 
-export type TProduct = z.infer<typeof productSchema>
+export type Product = z.infer<typeof productSchema>

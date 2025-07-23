@@ -1,12 +1,28 @@
-import { z } from 'zod'
+import { z } from "zod"
+import { capitalize } from "@/lib/utils"
 
-export const statusSchema = z.enum(["In Stock", "Low Stock", "Out of Stock"])
-
-export const productSchema = z.object({
-  id: z.string(),
+// Schema for the raw product data from the API
+const rawProductSchema = z.object({
+  id: z.number(),
   title: z.string(),
   category: z.string(),
   price: z.number(),
   stock: z.number(),
-  status: statusSchema,
-})
+  availabilityStatus: z.string(),
+});
+
+// We transform the raw data into the shape our application uses.
+// This is where we can rename fields and format data.
+export const productSchema = rawProductSchema.transform((product) => ({
+  id: String(product.id),
+  name: product.title,
+  category: capitalize(product.category),
+  price: product.price,
+  stock: product.stock,
+  status: product.availabilityStatus === "In Stock" ? "In Stock" : "Out of Stock",
+}));
+
+// Schema for the full API response, which includes an array of products
+export const productsResponseSchema = z.object({
+  products: z.array(productSchema),
+});

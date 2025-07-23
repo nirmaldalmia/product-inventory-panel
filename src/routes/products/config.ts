@@ -1,9 +1,9 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import type { TProduct } from "@/components/products/types";
+import type { Product } from "@/components/products/types";
 
-export const columns: ColumnDef<TProduct>[] = [
+export const columns: ColumnDef<Product>[] = [
   {
-    accessorKey: "title",
+    accessorKey: "name",
     header: "Product Name",
   },
   {
