@@ -7,7 +7,7 @@ export async function getProducts({
   sortBy,
   order,
   query,
-  limit = 10,
+  limit = 20,
   skip = 0,
 }: {
   sortBy?: string

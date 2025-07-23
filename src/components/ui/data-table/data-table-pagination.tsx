@@ -19,13 +19,13 @@ export function DataTablePagination<TData>({
     <div className="flex items-center justify-end space-x-2 py-4">
       <Pagination>
         <PaginationContent>
-          <PaginationItem>
+          <PaginationItem className="cursor-pointer">
             <PaginationPrevious
               onClick={() => table.previousPage()}
               isActive={table.getCanPreviousPage()}
             />
           </PaginationItem>
-          <PaginationItem>
+          <PaginationItem className="cursor-pointer">
             <PaginationNext
               onClick={() => table.nextPage()}
               isActive={table.getCanNextPage()}
