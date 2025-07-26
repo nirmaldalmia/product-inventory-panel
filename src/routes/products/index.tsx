@@ -11,6 +11,9 @@ import { SelectFilter } from '@/components/ui/select-filter'
 import { useProductCategories } from '@/lib/hooks/use-product-categories'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
+import { parseProductData } from '@/components/products/utils'
+import { getLocalStorageItem } from '@/lib/utils/local-storage'
+import type { RawProductData } from '@/components/products/types'
 
 export const Route = createFileRoute('/products/')({
   component: ProductsPage,
@@ -28,6 +31,8 @@ function ProductsPage() {
   } = useDataTableStore()
 
   const { data: categories = [] } = useProductCategories()
+  
+  const newAddedProducts = getLocalStorageItem<RawProductData[]>('newly-added-products')
 
   const { pageIndex, pageSize } = pagination
 
@@ -45,6 +50,16 @@ function ProductsPage() {
     staleTime: 1000 * 60 * 5, // 5 minutes
     placeholderData: keepPreviousData,
   })
+
+  const allProducts = React.useMemo(() => {
+    const hasSearchParams = search || category !== 'all' || sorting.length > 0
+
+    if (hasSearchParams || pageIndex > 0) {
+      return data?.products ?? []
+    }
+
+    return [...parseProductData(newAddedProducts || []), ...(data?.products ?? [])]
+  }, [data?.products, newAddedProducts, search, category, sorting, pageIndex])
 
   const pageCount = data ? Math.ceil(data.total / data.limit) : 0
 
@@ -96,7 +111,7 @@ function ProductsPage() {
       </div>
       <DataTable
         columns={columns}
-        data={data?.products ?? []}
+        data={allProducts}
         pageCount={pageCount}
         pagination={pagination}
         onPaginationChange={setPagination}

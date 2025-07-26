@@ -2,7 +2,7 @@ import { z } from "zod"
 import { humanize } from "@/lib/utils"
 
 // Schema for the raw product data from the API
-const rawProductSchema = z.object({
+export const rawProductSchema = z.object({
   id: z.number(),
   title: z.string(),
   category: z.string(),

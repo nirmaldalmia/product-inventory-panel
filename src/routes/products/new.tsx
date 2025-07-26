@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { humanize } from '@/lib/utils'
+import { transformProductData } from '@/components/products/utils'
 
 export const Route = createFileRoute('/products/new')({
   component: NewProductPage,
@@ -54,7 +55,7 @@ function NewProductPage() {
     onSuccess: (newProduct) => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       toast.success('Product added successfully!')
-      appendToLocalStorageArray('newly-added-products', newProduct)
+      appendToLocalStorageArray('newly-added-products', transformProductData(newProduct))
       navigate({ to: '/products' })
     },
     onError: (error) => {
