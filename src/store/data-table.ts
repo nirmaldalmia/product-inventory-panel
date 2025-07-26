@@ -20,8 +20,16 @@ export const useDataTableStore = create<DataTableStore>(set => ({
     pageIndex: 0,
     pageSize: 20,
   },
-  setSearch: search => set({ search }),
-  setCategory: category => set({ category }),
+  setSearch: search =>
+    set(state => ({
+      search,
+      pagination: { ...state.pagination, pageIndex: 0 },
+    })),
+  setCategory: category =>
+    set(state => ({
+      category,
+      pagination: { ...state.pagination, pageIndex: 0 },
+    })),
   setPagination: updater =>
     set(state => ({
       pagination:
