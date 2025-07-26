@@ -1,4 +1,5 @@
 import { productsResponseSchema } from '@/components/products/schema'
+import type { ProductFormData } from '@/components/products/types'
 
 // fetch only relevant fields
 const select = ['title', 'category', 'price', 'stock', 'availabilityStatus']
@@ -48,11 +49,30 @@ export async function getProducts({
   return productsResponseSchema.parse(data)
 }
 
-export async function getProductCategories() {
+export async function addProduct(data: ProductFormData) {
+  const { title, price, stock, description, category } = data
+
+  const res = await fetch('https://dummyjson.com/products/add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title,
+      price,
+      stock,
+      description,
+      category,
+    }),
+  })
+  if (!res.ok) {
+    throw new Error('Failed to add product')
+  }
+  return res.json()
+}
+
+export async function getProductCategories(): Promise<string[]> {
   const res = await fetch('https://dummyjson.com/products/category-list')
   if (!res.ok) {
-    throw new Error('Failed to fetch product categories')
+    throw new Error('Failed to fetch categories')
   }
-  const data = await res.json()
-  return data as string[]
+  return res.json()
 } 

@@ -4,10 +4,11 @@ import { useQuery, keepPreviousData } from '@tanstack/react-query'
 
 import { columns } from '@/components/products/config'
 import { DataTable } from '@/components/ui/data-table'
-import { getProductCategories, getProducts } from '@/lib/api/products'
+import { getProducts } from '@/lib/api/products'
 import { useDataTableStore } from '@/store/data-table'
 import { SearchInput } from '@/components/ui/search-input'
 import { SelectFilter } from '@/components/ui/select-filter'
+import { useProductCategories } from '@/lib/hooks/use-product-categories'
 
 export const Route = createFileRoute('/products/')({
   component: ProductsPage,
@@ -24,10 +25,7 @@ function ProductsPage() {
     setCategory,
   } = useDataTableStore()
 
-  const { data: categories = [] } = useQuery({
-    queryKey: ['product-categories'],
-    queryFn: getProductCategories,
-  })
+  const { data: categories = [] } = useProductCategories()
 
   const { pageIndex, pageSize } = pagination
 

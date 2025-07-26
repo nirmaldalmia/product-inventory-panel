@@ -29,3 +29,11 @@ export const productsResponseSchema = z.object({
   skip: z.number(),
   limit: z.number(),
 });
+
+export const newProductFormSchema = z.object({
+  title: z.string().min(1, 'Product name is required'),
+  category: z.string().min(1, 'Category is required'),
+  price: z.number().positive('Price must be a positive number'),
+  stock: z.number().int().nonnegative('Stock must be a non-negative integer'),
+  description: z.string().optional(),
+});
