@@ -175,9 +175,18 @@ function NewProductPage() {
             )}
           />
 
-          <Button type="submit" disabled={mutation.isPending}>
-            {mutation.isPending ? 'Adding...' : 'Add Product'}
-          </Button>
+          <div className="flex gap-2 mt-6">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate({ to: '/products' })}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={mutation.isPending}>
+              {mutation.isPending ? 'Adding...' : 'Add Product'}
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

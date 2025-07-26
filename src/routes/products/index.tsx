@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
 
 import { columns } from '@/components/products/config'
@@ -9,6 +9,8 @@ import { useDataTableStore } from '@/store/data-table'
 import { SearchInput } from '@/components/ui/search-input'
 import { SelectFilter } from '@/components/ui/select-filter'
 import { useProductCategories } from '@/lib/hooks/use-product-categories'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
 
 export const Route = createFileRoute('/products/')({
   component: ProductsPage,
@@ -65,7 +67,15 @@ function ProductsPage() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Products</h1>
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-bold">Products</h1>
+          <Button asChild variant="outline">
+            <Link to="/products/new" className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              Add Product
+            </Link>
+          </Button>
+        </div>
         <div className="flex items-center gap-4">
           <div className="w-96">
             <SelectFilter
