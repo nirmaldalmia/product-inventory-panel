@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { humanize } from "@/lib/utils"
+import { humanize } from "@/lib/utils/utils"
 
 // Schema for the raw product data from the API
 export const rawProductSchema = z.object({

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { X } from 'lucide-react'
-import { cn, humanize } from '@/lib/utils'
+import { cn, humanize } from '@/lib/utils/utils'
 
 import {
   Select,

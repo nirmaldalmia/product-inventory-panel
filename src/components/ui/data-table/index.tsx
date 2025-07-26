@@ -1,12 +1,17 @@
 "use client"
 
-import type { ColumnDef, OnChangeFn, PaginationState } from "@tanstack/react-table"
+import type {
+  ColumnDef,
+  OnChangeFn,
+  PaginationState,
+  SortingState,
+} from '@tanstack/react-table'
 import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from '@tanstack/react-table'
 
 import {
   Table,
@@ -15,10 +20,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { useDataTableStore } from '@/store/data-table'
+} from '@/components/ui/table'
 import * as React from 'react'
-import { DataTablePagination } from "./data-table-pagination"
+import { DataTablePagination } from './data-table-pagination'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -26,6 +30,8 @@ interface DataTableProps<TData, TValue> {
   pageCount?: number
   pagination?: PaginationState
   onPaginationChange?: OnChangeFn<PaginationState>
+  sorting?: SortingState
+  onSortingChange?: OnChangeFn<SortingState>
 }
 
 export function DataTable<TData, TValue>({
@@ -34,18 +40,19 @@ export function DataTable<TData, TValue>({
   pageCount,
   pagination,
   onPaginationChange,
+  sorting,
+  onSortingChange,
 }: DataTableProps<TData, TValue>) {
-  const { sorting, setSorting } = useDataTableStore()
-
   const table = useReactTable({
     data,
     columns,
     pageCount: pageCount ?? -1,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    onSortingChange,
     onPaginationChange,
     manualPagination: !!pagination,
+    manualSorting: !!onSortingChange,
     state: {
       sorting,
       pagination,
@@ -61,7 +68,10 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      style={{ width: `${header.getSize()}%` }}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(

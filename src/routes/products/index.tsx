@@ -10,21 +10,28 @@ import { parseProductData } from '@/components/products/utils'
 import { getLocalStorageItem } from '@/lib/utils/local-storage'
 import type { RawProductData } from '@/components/products/types'
 import { ProductListHeader } from '@/components/products/product-list-header'
+import { QueryBoundary } from '@/components/ui/query-boundary'
 
 export const Route = createFileRoute('/products/')({
   component: ProductsPage,
 })
 
 function ProductsPage() {
-  const { sorting, search, pagination, setPagination, category } =
-    useDataTableStore()
+  const {
+    sorting,
+    search,
+    pagination,
+    setPagination,
+    category,
+    setSorting,
+  } = useDataTableStore()
 
   const newAddedProducts =
     getLocalStorageItem<RawProductData[]>('newly-added-products')
 
   const { pageIndex, pageSize } = pagination
 
-  const { data, isLoading, error } = useQuery({
+  const { data, ...queryState } = useQuery({
     queryKey: ['products', sorting, search, pageIndex, pageSize, category],
     queryFn: () =>
       getProducts({
@@ -46,37 +53,28 @@ function ProductsPage() {
       return data?.products ?? []
     }
 
-    return [...parseProductData(newAddedProducts || []), ...(data?.products ?? [])]
+    return [
+      ...parseProductData(newAddedProducts || []),
+      ...(data?.products ?? []),
+    ]
   }, [data?.products, newAddedProducts, search, category, sorting, pageIndex])
 
   const pageCount = data ? Math.ceil(data.total / data.limit) : 0
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <p>Loading...</p>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <p className="text-red-500">Error: {error.message}</p>
-      </div>
-    )
-  }
-
   return (
     <div className="container mx-auto py-10">
       <ProductListHeader />
-      <DataTable
-        columns={columns}
-        data={allProducts}
-        pageCount={pageCount}
-        pagination={pagination}
-        onPaginationChange={setPagination}
-      />
+      <QueryBoundary {...queryState}>
+        <DataTable
+          columns={columns}
+          data={allProducts}
+          pageCount={pageCount}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+          sorting={sorting}
+          onSortingChange={setSorting}
+        />
+      </QueryBoundary>
     </div>
   )
 } 

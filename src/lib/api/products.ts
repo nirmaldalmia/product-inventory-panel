@@ -4,6 +4,8 @@ import type { ProductFormData } from '@/components/products/types'
 // fetch only relevant fields
 const select = ['title', 'category', 'price', 'stock', 'availabilityStatus']
 
+const BASE_URL = 'https://dummyjson.com'
+
 export async function getProducts({
   sortBy,
   order,
@@ -19,7 +21,7 @@ export async function getProducts({
   limit?: number
   skip?: number
 }) {
-  const url = new URL('https://dummyjson.com/products')
+  const url = new URL(`${BASE_URL}/products`)
 
   if (query) {
     url.pathname = `/products/search`
@@ -52,7 +54,7 @@ export async function getProducts({
 export async function addProduct(data: ProductFormData) {
   const { title, price, stock, description, category } = data
 
-  const res = await fetch('https://dummyjson.com/products/add', {
+  const res = await fetch(`${BASE_URL}/products/add`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -70,7 +72,7 @@ export async function addProduct(data: ProductFormData) {
 }
 
 export async function getProductCategories(): Promise<string[]> {
-  const res = await fetch('https://dummyjson.com/products/category-list')
+  const res = await fetch(`${BASE_URL}/products/category-list`)
   if (!res.ok) {
     throw new Error('Failed to fetch categories')
   }

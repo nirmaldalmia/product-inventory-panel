@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { humanize } from '@/lib/utils'
+import { humanize } from '@/lib/utils/utils'
 import { transformProductData } from '@/components/products/utils'
 
 export const Route = createFileRoute('/products/new')({
