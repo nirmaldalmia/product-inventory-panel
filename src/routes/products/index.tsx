@@ -2,7 +2,7 @@ import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
 
-import { columns } from './config'
+import { columns } from '@/components/products/config'
 import { DataTable } from '@/components/ui/data-table'
 import { getProducts } from '@/lib/api/products'
 import { useDataTableStore } from '@/store/data-table'
