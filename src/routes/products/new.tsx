@@ -8,6 +8,7 @@ import { newProductFormSchema } from '@/components/products/schema'
 import type { ProductFormData } from '@/components/products/types'
 import { Button } from '@/components/ui/button'
 import { useProductCategories } from '@/lib/hooks/use-product-categories'
+import { appendToLocalStorageArray } from '@/lib/utils/local-storage'
 import {
   Form,
   FormControl,
@@ -50,9 +51,10 @@ function NewProductPage() {
 
   const mutation = useMutation({
     mutationFn: addProduct,
-    onSuccess: () => {
+    onSuccess: (newProduct) => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       toast.success('Product added successfully!')
+      appendToLocalStorageArray('newly-added-products', newProduct)
       navigate({ to: '/products' })
     },
     onError: (error) => {
