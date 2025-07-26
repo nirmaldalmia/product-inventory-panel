@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { capitalize } from "@/lib/utils"
+import { humanize } from "@/lib/utils"
 
 // Schema for the raw product data from the API
 const rawProductSchema = z.object({
@@ -16,7 +16,7 @@ const rawProductSchema = z.object({
 export const productSchema = rawProductSchema.transform((product) => ({
   id: String(product.id),
   name: product.title,
-  category: capitalize(product.category),
+  category: humanize(product.category),
   price: product.price,
   stock: product.stock,
   status: product.availabilityStatus === "In Stock" ? "In Stock" : "Out of Stock",

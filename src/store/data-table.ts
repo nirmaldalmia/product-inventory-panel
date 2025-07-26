@@ -6,6 +6,8 @@ type DataTableStore = {
   setSorting: OnChangeFn<SortingState>
   search: string
   setSearch: (search: string) => void
+  category: string
+  setCategory: (category: string) => void
   pagination: PaginationState
   setPagination: OnChangeFn<PaginationState>
 }
@@ -13,11 +15,13 @@ type DataTableStore = {
 export const useDataTableStore = create<DataTableStore>(set => ({
   sorting: [],
   search: '',
+  category: 'all',
   pagination: {
     pageIndex: 0,
     pageSize: 20,
   },
   setSearch: search => set({ search }),
+  setCategory: category => set({ category }),
   setPagination: updater =>
     set(state => ({
       pagination:

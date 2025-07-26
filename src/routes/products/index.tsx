@@ -7,24 +7,33 @@ import { DataTable } from '@/components/ui/data-table'
 import { getProducts } from '@/lib/api/products'
 import { useDataTableStore } from '@/store/data-table'
 import { SearchInput } from '@/components/ui/search-input'
+import { CategoryFilter } from '@/components/products/category-filter'
 
 export const Route = createFileRoute('/products/')({
   component: ProductsPage,
 })
 
 function ProductsPage() {
-  const { sorting, search, setSearch, pagination, setPagination } =
-    useDataTableStore()
+  const {
+    sorting,
+    search,
+    setSearch,
+    pagination,
+    setPagination,
+    category,
+    setCategory,
+  } = useDataTableStore()
 
   const { pageIndex, pageSize } = pagination
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['products', sorting, search, pageIndex, pageSize],
+    queryKey: ['products', sorting, search, pageIndex, pageSize, category],
     queryFn: () =>
       getProducts({
         sortBy: sorting[0]?.id,
         order: sorting[0]?.desc ? 'desc' : 'asc',
         query: search,
+        category,
         limit: pageSize,
         skip: pageIndex * pageSize,
       }),
@@ -54,12 +63,15 @@ function ProductsPage() {
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Products</h1>
-        <div className="max-w-sm">
-          <SearchInput
-            placeholder="Search by name..."
-            value={search}
-            onChange={setSearch}
-          />
+        <div className="flex items-center gap-4">
+          <CategoryFilter value={category} onChange={setCategory} />
+          <div className="max-w-md w-full">
+            <SearchInput
+              placeholder="Search by name..."
+              value={search}
+              onChange={setSearch}
+            />
+          </div>
         </div>
       </div>
       <DataTable

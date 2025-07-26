@@ -7,12 +7,14 @@ export async function getProducts({
   sortBy,
   order,
   query,
+  category,
   limit = 20,
   skip = 0,
 }: {
   sortBy?: string
   order?: 'asc' | 'desc'
   query?: string
+  category?: string
   limit?: number
   skip?: number
 }) {
@@ -21,6 +23,8 @@ export async function getProducts({
   if (query) {
     url.pathname = `/products/search`
     url.searchParams.set('q', query)
+  } else if (category && category !== 'all') {
+    url.pathname = `/products/category/${category}`
   }
 
   url.searchParams.set('select', select.join(','))
@@ -42,4 +46,13 @@ export async function getProducts({
 
   const data = await res.json()
   return productsResponseSchema.parse(data)
+}
+
+export async function getProductCategories() {
+  const res = await fetch('https://dummyjson.com/products/category-list')
+  if (!res.ok) {
+    throw new Error('Failed to fetch product categories')
+  }
+  const data = await res.json()
+  return data as string[]
 } 
