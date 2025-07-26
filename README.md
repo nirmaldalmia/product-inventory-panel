@@ -1,69 +1,45 @@
-# React + TypeScript + Vite
+# Product Inventory Panel
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple inventory management panel for products.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is a web application that allows users to view, search, and add products. It's built using a modern frontend stack:
 
-## Expanding the ESLint configuration
+- **Framework**: React with Vite for a fast development experience.
+- **Language**: TypeScript for type safety.
+- **Styling**: Tailwind CSS for utility-first styling, with `shadcn/ui` components.
+- **Data Fetching & State Management**: TanStack Query (React Query) for managing server state and caching, and Zustand for global client state.
+- **Routing**: TanStack Router for type-safe routing.
+- **Forms**: React Hook Form for performant form handling, with Zod for schema validation.
+- **Backend**: The application uses the `dummyjson.com` API for product data, so it's a frontend-only application demonstrating CRUD operations against a fake API.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Setup Instructions
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd product-inventory-panel
+    ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+    The application will be available at `http://localhost:5173`.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Time Taken
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The project was developed over multiple sessions with a development time of approximately 4 hours. 
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Limitations and TODOs
+
+- **Newly Added Products**: Newly added products are saved in `localStorage` and will only appear on the first page of the products table when no filters are applied. They are not persisted to a database.
+- **No Edit/Delete**: The functionality to edit a product has not been implemented.
+
+---
